@@ -45,5 +45,3 @@ def prueba_plazo_cero():
     
     else:
         print("prueba caso plazo cero Fallida")
-
-prueba_plazo_cero()
