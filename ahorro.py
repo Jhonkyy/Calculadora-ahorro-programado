@@ -24,7 +24,6 @@ def prueba_normal1():
     else:
         print("prueba caso normal 1 Fallida")
 
-prueba_normal1()
 
 
 def prueba_normal2():
