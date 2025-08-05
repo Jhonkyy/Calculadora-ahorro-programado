@@ -11,4 +11,4 @@ cuota_ahorro = calcular_ahorro(meta, plazo, abono_extra)
 
 #Mostrar salidas
 
-print(calcular_ahorro)
+print(cuota_ahorro)
