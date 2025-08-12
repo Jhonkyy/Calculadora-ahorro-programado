@@ -1,4 +1,17 @@
+class ErrorMetaNegativa(Exception):
+    "la meta de ahorro no puede ser negativa"
+class Errorplazocero(Exception):
+    "el plazo de ahorro no puede ser 0"
+class Errorextramayormeta(Exception):
+    "la meta tiene que ser mayor que el extra"
 def calcular_ahorro(meta, plazo, extra):
+    if meta<0:
+        raise ErrorMetaNegativa("la meta de ahorro no puede ser negativa")
+
+    if plazo <=0:
+        raise Errorplazocero("el plazo de ahorro no puede ser 0")
+    if extra > meta:
+        raise Errorextramayormeta("la meta tiene que ser mayor que el extra")
     return (meta-extra)/plazo
     
 

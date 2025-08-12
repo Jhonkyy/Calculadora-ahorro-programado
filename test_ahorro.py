@@ -1,7 +1,7 @@
 #importelo ahi
 from ahorro import calcular_ahorro
 import unittest
-
+from ahorro import ErrorMetaNegativa,Errorplazocero,Errorextramayormeta 
 
 class testAhorro(unittest.TestCase):
     #Cada prueba es un metodo y DEBE iniciar coon la palabra "test"
@@ -81,6 +81,37 @@ class testAhorro(unittest.TestCase):
         cuota_esperada = 0
         self.assertAlmostEqual(cuota_calculado,cuota_esperada,2)
 
+    """CASOS DE ERROR"""
+    
+    def test_Error1(self):
+        #entradas
+        meta = -1300000
+        plazo = 15
+        extra = 0
+        #proceso
+        
+        with self.assertRaises(ErrorMetaNegativa):
+            calcular_ahorro(meta,plazo,extra)
+            
+    def test_Error2(self):
+        #entradas
+        meta = 50000
+        plazo = 0
+        extra = 2000
+        #proceso
+        
+        with self.assertRaises(Errorplazocero):
+            calcular_ahorro(meta,plazo,extra)
+
+    def test_Error3(self):
+        #entradas
+        meta = 400000
+        plazo = 2
+        extra = 800000
+        #proceso
+        
+        with self.assertRaises(Errorextramayormeta):
+            calcular_ahorro(meta,plazo,extra)
 
 
 
