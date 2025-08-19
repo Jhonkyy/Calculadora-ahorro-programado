@@ -28,7 +28,28 @@ prueba_normal1()
 
 
 def prueba_normal2():
-    pass
+    """"
+    Entradas:
+    valor a ahorrar
+    plazo(meses)
+    abono extra
+    """
+    
+    meta = 9000000
+    plazo = 12
+    extra = 0
+    
+    salida = calcular_ahorro(meta,plazo,extra) 
+    
+    salida_esperada = 750000.00
+    
+    if round(salida,2) == round(salida_esperada,2):
+        print("Prueba caso normal 1 Exitosa ")
+    
+    else:
+        print("prueba caso normal 1 Fallida")
+
+
 
 def prueba_plazo_cero():
     
@@ -46,4 +67,4 @@ def prueba_plazo_cero():
     else:
         print("prueba caso plazo cero Fallida")
 
-prueba_plazo_cero()
+
