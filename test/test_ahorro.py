@@ -1,7 +1,9 @@
-#importelo ahi
-from ahorro import calcular_ahorro
+import sys
+sys.path.append("src")
+
+from model.ahorro import calcular_ahorro
 import unittest
-from ahorro import ErrorMetaNegativa,Errorplazocero,Errorextramayormeta 
+from model.ahorro import ErrorMetaNegativa,Errorplazocero,Errorextramayormeta 
 
 class testAhorro(unittest.TestCase):
     #Cada prueba es un metodo y DEBE iniciar coon la palabra "test"

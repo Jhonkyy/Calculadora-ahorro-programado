@@ -1,4 +1,7 @@
-from ahorro import calcular_ahorro
+import sys
+sys.path.append("src")
+
+from model.ahorro import calcular_ahorro
 #Leer entradas
 
 meta = float(input("Ingrese meta de ahorro: "))
