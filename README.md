@@ -4,6 +4,7 @@ Este es un programa en Python que calcula el ahorro programado para alcanzar una
 Permite al usuario ingresar una meta de ahorro y el tiempo en meses para alcanzarla.
 El programa calcula el monto a ahorrar mensualmente y muestra un resumen de los resultados.
 
+```bash
 Calculadora-ahorro-programado/
 ├── src/                   # Código fuente
 │   ├── model/             # Lógica de negocio
@@ -12,7 +13,8 @@ Calculadora-ahorro-programado/
 │       └── interfaz.py    # Interfaz de consola (CLI)
 ├── test/                  # Pruebas unitarias
 │   └── test_ahorro.py
-├── README.md              # Documentación
+└── README.md              # Documentación
+````
 
 ## Arquitectura y diseño
 
