@@ -56,10 +56,10 @@ def prueba_normal2():
     salida_esperada = 750000.00
     
     if round(salida,2) == round(salida_esperada,2):
-        print("Prueba caso normal 1 Exitosa ")
+        print("Prueba caso normal 2 Exitosa ")
     
     else:
-        print("prueba caso normal 1 Fallida")
+        print("prueba caso normal 2 Fallida")
 
 
 
