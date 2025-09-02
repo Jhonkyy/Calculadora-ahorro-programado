@@ -3,8 +3,7 @@ sys.path.append("src")
 
 from model.ahorro import calcular_ahorro
 import unittest
-from model.ahorro import ErrorMetaNegativa,Errorplazocero,Errorextramayormeta 
-
+from model.ahorro import ErrorMetaNegativa, ErrorPlazoCero , ErrorExtraMayorMeta 
 class testAhorro(unittest.TestCase):
     #Cada prueba es un metodo y DEBE iniciar coon la palabra "test"
     """CASOS NORMALES"""
@@ -102,7 +101,7 @@ class testAhorro(unittest.TestCase):
         extra = 2000
         #proceso
         
-        with self.assertRaises(Errorplazocero):
+        with self.assertRaises(ErrorPlazoCero):
             calcular_ahorro(meta,plazo,extra)
 
     def test_Error3(self):
@@ -112,7 +111,7 @@ class testAhorro(unittest.TestCase):
         extra = 800000
         #proceso
         
-        with self.assertRaises(Errorextramayormeta):
+        with self.assertRaises(ErrorExtraMayorMeta):
             calcular_ahorro(meta,plazo,extra)
 
 
