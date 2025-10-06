@@ -1,4 +1,4 @@
-# 📊 Calculadora de Ahorro Programado 🤑🤑🤑🤑🤑🤑🤑
+# Calculadora de Ahorro Programado 
 Este es un programa en Python que calcula el ahorro programado para alcanzar una meta financiera.
 Permite al usuario ingresar una meta de ahorro y el tiempo en meses para alcanzarla.
 El programa calcula el monto a ahorrar mensualmente y muestra un resumen de los resultados.
@@ -31,4 +31,4 @@ py test/test_ahorro.py
 
 
 ## Autores
-Jhon Fredy Asprilla y Cristian Copete
+Andre Rivas Garcia
