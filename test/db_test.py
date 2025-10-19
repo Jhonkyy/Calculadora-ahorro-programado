@@ -101,6 +101,63 @@ class TestBaseDatos(unittest.TestCase):
         except Exception as e:
             print("⚠️ Error al borrar tabla usuarios:", e)
 
+class TestCalculosController(unittest.TestCase):
+
+    @classmethod
+    def setUpClass(cls):
+        CalculosController.borrar_tabla()
+        CalculosController.crear_tabla()
+
+    """ ------------------ INSERTAR ------------------ """
+    def test_insertar_calculo1(self):
+        calc = CalculoAhorro(id_usuario=1, meta=5000000, plazo_meses=24,
+                             interes_anual=6, abono_extra=0, resultado_mensual=180000)
+        id_gen = CalculosController.insertar(calc)
+        self.assertIsNotNone(id_gen)
+
+    def test_insertar_calculo2(self):
+        calc = CalculoAhorro(id_usuario=1, meta=2400000, plazo_meses=8,
+                             interes_anual=0, abono_extra=400000, resultado_mensual=250000)
+        id_gen = CalculosController.insertar(calc)
+        self.assertIsNotNone(id_gen)
+
+    def test_insertar_calculo3(self):
+        calc = CalculoAhorro(id_usuario=2, meta=3000000, plazo_meses=12,
+                             interes_anual=10, abono_extra=200000, resultado_mensual=250000)
+        id_gen = CalculosController.insertar(calc)
+        self.assertIsNotNone(id_gen)
+
+    """ ------------------ BUSCAR ------------------ """
+    def test_buscar_por_id(self):
+        resultado = CalculosController.buscar_por_id(1)
+        self.assertIsNotNone(resultado)
+        self.assertEqual(resultado.id_calculo, 1)
+
+    def test_buscar_por_usuario_con_resultados(self):
+        resultados = CalculosController.buscar_por_usuario(1)
+        self.assertGreaterEqual(len(resultados), 2)
+
+    def test_buscar_por_usuario_sin_resultados(self):
+        resultados = CalculosController.buscar_por_usuario(999)
+        self.assertEqual(resultados, [])
+
+    """ ------------------ MODIFICAR ------------------ """
+    def test_modificar_calculo1(self):
+        CalculosController.modificar_calculo(1, 6000000, 30, 8, 100000, 200000)
+        modificado = CalculosController.buscar_por_id(1)
+        self.assertEqual(modificado.meta, 6000000)
+
+    def test_modificar_calculo2(self):
+        CalculosController.modificar_calculo(2, 2000000, 10, 5, 0, 180000)
+        modificado = CalculosController.buscar_por_id(2)
+        self.assertEqual(modificado.plazo_meses, 10)
+
+    def test_modificar_calculo3(self):
+        CalculosController.modificar_calculo(3, 3500000, 14, 12, 300000, 300000)
+        modificado = CalculosController.buscar_por_id(3)
+        self.assertAlmostEqual(modificado.interes_anual, 12)
+
+
 
 if __name__ == "__main__":
     unittest.main()
