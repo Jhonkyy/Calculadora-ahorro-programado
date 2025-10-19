@@ -23,27 +23,31 @@ class CalculosController:
         cursor.connection.commit()
 
     def insertar(calculo: CalculoAhorro):
-        """Inserta un cálculo realizado por un usuario"""
+        """Inserta un cálculo realizado por un usuario y devuelve su ID"""
         cursor = CalculosController.obtener_cursor()
-        consulta = f"""
-        INSERT INTO calculos_ahorro 
-        (id_usuario, meta, plazo_meses, interes_anual, abono_extra, resultado_mensual)
-        VALUES 
-        ({calculo.id_usuario}, {calculo.meta}, {calculo.plazo_meses}, 
-        {calculo.interes_anual}, {calculo.abono_extra}, {calculo.resultado_mensual})
+        consulta = """
+            INSERT INTO calculos_ahorro 
+            (id_usuario, meta, plazo_meses, interes_anual, abono_extra, resultado_mensual)
+            VALUES (%s, %s, %s, %s, %s, %s)
+            RETURNING id_calculo;
         """
-        cursor.execute(consulta)
+        cursor.execute(consulta, (
+            calculo.id_usuario, calculo.meta, calculo.plazo_meses,
+            calculo.interes_anual, calculo.abono_extra, calculo.resultado_mensual
+        ))
+        id_generado = cursor.fetchone()[0]
         cursor.connection.commit()
+        return id_generado
 
     def buscar_por_id(id_calculo) -> CalculoAhorro:
         """Busca un cálculo específico por su ID"""
         cursor = CalculosController.obtener_cursor()
-        consulta = f"""
+        consulta = """
         SELECT id_calculo, id_usuario, meta, plazo_meses, interes_anual, 
                abono_extra, resultado_mensual, fecha_registro
-        FROM calculos_ahorro WHERE id_calculo = {id_calculo}
+        FROM calculos_ahorro WHERE id_calculo = %s
         """
-        cursor.execute(consulta)
+        cursor.execute(consulta, (id_calculo,))
         fila = cursor.fetchone()
         if not fila:
             return None
@@ -56,12 +60,12 @@ class CalculosController:
     def buscar_por_usuario(id_usuario) -> list[CalculoAhorro]:
         """Devuelve todos los cálculos de un usuario"""
         cursor = CalculosController.obtener_cursor()
-        consulta = f"""
+        consulta = """
         SELECT id_calculo, id_usuario, meta, plazo_meses, interes_anual, 
                abono_extra, resultado_mensual, fecha_registro
-        FROM calculos_ahorro WHERE id_usuario = {id_usuario}
+        FROM calculos_ahorro WHERE id_usuario = %s
         """
-        cursor.execute(consulta)
+        cursor.execute(consulta, (id_usuario,))
         filas = cursor.fetchall()
         if not filas:
             return []
@@ -79,21 +83,21 @@ class CalculosController:
     def modificar_calculo(id_calculo, nueva_meta, nuevo_plazo, nuevo_interes, nuevo_abono, nuevo_resultado):
         """Modifica un cálculo existente"""
         cursor = CalculosController.obtener_cursor()
-        consulta = f"""
+        consulta = """
         UPDATE calculos_ahorro
-        SET meta = {nueva_meta}, plazo_meses = {nuevo_plazo}, 
-            interes_anual = {nuevo_interes}, abono_extra = {nuevo_abono}, 
-            resultado_mensual = {nuevo_resultado}
-        WHERE id_calculo = {id_calculo}
+        SET meta = %s, plazo_meses = %s, 
+            interes_anual = %s, abono_extra = %s, 
+            resultado_mensual = %s
+        WHERE id_calculo = %s
         """
-        cursor.execute(consulta)
+        cursor.execute(consulta, (nueva_meta, nuevo_plazo, nuevo_interes, nuevo_abono, nuevo_resultado, id_calculo))
         cursor.connection.commit()
 
     def eliminar(id_calculo):
         """Elimina un cálculo"""
         cursor = CalculosController.obtener_cursor()
-        consulta = f"DELETE FROM calculos_ahorro WHERE id_calculo = {id_calculo}"
-        cursor.execute(consulta)
+        consulta = "DELETE FROM calculos_ahorro WHERE id_calculo = %s"
+        cursor.execute(consulta, (id_calculo,))
         cursor.connection.commit()
 
     def obtener_cursor():
