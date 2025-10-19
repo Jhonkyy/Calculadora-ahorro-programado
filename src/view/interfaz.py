@@ -88,6 +88,7 @@ class AhorroLayout(BoxLayout):
         # Resultado
         self.resultado_lbl = Label(text="Resultado mensual: -", size_hint_y=None, height=32)
         self.add_widget(self.resultado_lbl)
+    
     def on_calcular(self, _instance):
         try:
             if not self.meta_input.text or not self.plazo_input.text:
@@ -97,14 +98,13 @@ class AhorroLayout(BoxLayout):
             meta_valor = float(self.meta_input.text)
             plazo_valor = int(self.plazo_input.text)
             extra_valor = float(self.extra_input.text or 0)
-            interes_anual = 12  # Puedes dejarlo fijo si no lo pides en pantalla
+            interes_anual = 12  
 
             # 1) Calculamos
             resultado = calcular_ahorro(meta_valor, plazo_valor, extra_valor)
 
-            # 2) Creamos un objeto del modelo
             calculo = CalculoAhorro(
-                id_usuario=1,  # Harás login después si quieres
+                id_usuario=1,  
                 meta=meta_valor,
                 plazo_meses=plazo_valor,
                 interes_anual=interes_anual,
@@ -112,15 +112,15 @@ class AhorroLayout(BoxLayout):
                 resultado_mensual=resultado
             )
 
-            # 3) Lo insertamos en la BD
+
             CalculosController.insertar(calculo)
 
-            # 4) Mostramos en pantalla
+        
             self.resultado_lbl.text = f"Resultado mensual: {resultado:.2f}"
 
         except Exception as e:
             self.resultado_lbl.text = f"Ocurrió un error: {e}"
-            
+                
     def on_limpiar(self, _instance):
         self.meta_input.text = ""
         self.plazo_input.text = ""
