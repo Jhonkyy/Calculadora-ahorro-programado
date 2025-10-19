@@ -3,6 +3,9 @@ sys.path.append("src")
 
 from model.ahorro import calcular_ahorro
 from model.ahorro import ErrorMetaNegativa, ErrorPlazoCero, ErrorExtraMayorMeta
+from controller.controlador_ahorros import CalculosController
+from model.calculo_ahorro import CalculoAhorro
+
 
 from kivy.app import App
 from kivy.uix.boxlayout import BoxLayout
@@ -56,7 +59,6 @@ class AhorroLayout(BoxLayout):
 
     def on_calcular(self, _instance):
         try:
-            # Validación previa de campos vacíos
             if not self.meta_input.text or not self.plazo_input.text:
                 self.resultado_lbl.text = "Complete meta y plazo"
                 return
@@ -64,20 +66,29 @@ class AhorroLayout(BoxLayout):
             meta_valor = float(self.meta_input.text)
             plazo_valor = int(self.plazo_input.text)
             extra_valor = float(self.extra_input.text or 0)
+            interes_anual = 12  # Puedes dejarlo fijo si no lo pides en pantalla
 
+            # 1) Calculamos
             resultado = calcular_ahorro(meta_valor, plazo_valor, extra_valor)
+
+            # 2) Creamos un objeto del modelo
+            calculo = CalculoAhorro(
+                id_usuario=1,  # Harás login después si quieres
+                meta=meta_valor,
+                plazo_meses=plazo_valor,
+                interes_anual=interes_anual,
+                abono_extra=extra_valor,
+                resultado_mensual=resultado
+            )
+
+            # 3) Lo insertamos en la BD
+            CalculosController.insertar(calculo)
+
+            # 4) Mostramos en pantalla
             self.resultado_lbl.text = f"Resultado mensual: {resultado:.2f}"
 
-        except ValueError:
-            self.resultado_lbl.text = "Entradas inválidas: use números válidos"
-        except ErrorMetaNegativa:
-            self.resultado_lbl.text = "Error: la meta no puede ser negativa"
-        except ErrorPlazoCero:
-            self.resultado_lbl.text = "Error: el plazo debe ser mayor que 0"
-        except ErrorExtraMayorMeta:
-            self.resultado_lbl.text = "Error: el extra no puede superar la meta"
-        except Exception:
-            self.resultado_lbl.text = "Ocurrió un error inesperado"
+        except Exception as e:
+            self.resultado_lbl.text = f"Ocurrió un error: {e}"
 
     def on_limpiar(self, _instance):
         self.meta_input.text = ""
