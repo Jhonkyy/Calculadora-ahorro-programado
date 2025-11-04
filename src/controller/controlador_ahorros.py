@@ -6,6 +6,7 @@ import psycopg2
 from model.calculo_ahorro import CalculoAhorro
 import secret_config
 
+
 class CalculosController:
 
     def crear_tabla():
@@ -26,56 +27,67 @@ class CalculosController:
         """Inserta un cálculo realizado por un usuario y devuelve su ID"""
         cursor = CalculosController.obtener_cursor()
         consulta = """
-            INSERT INTO calculos_ahorro 
+            INSERT INTO calculos 
             (id_usuario, meta, plazo_meses, interes_anual, abono_extra, resultado_mensual)
             VALUES (%s, %s, %s, %s, %s, %s)
             RETURNING id_calculo;
         """
         cursor.execute(consulta, (
-            calculo.id_usuario, calculo.meta, calculo.plazo_meses,
-            calculo.interes_anual, calculo.abono_extra, calculo.resultado_mensual
+            calculo.id_usuario,
+            calculo.meta,
+            calculo.plazo_meses,
+            calculo.interes_anual,
+            calculo.abono_extra,
+            calculo.resultado_mensual
         ))
         id_generado = cursor.fetchone()[0]
         cursor.connection.commit()
         return id_generado
 
-    def buscar_por_id(id_calculo) -> CalculoAhorro:
+    def buscar_por_id(id_calculo) -> CalculoAhorro | None:
         """Busca un cálculo específico por su ID"""
         cursor = CalculosController.obtener_cursor()
         consulta = """
-        SELECT id_calculo, id_usuario, meta, plazo_meses, interes_anual, 
-               abono_extra, resultado_mensual, fecha_registro
-        FROM calculos_ahorro WHERE id_calculo = %s
+            SELECT id_calculo, id_usuario, meta, plazo_meses, interes_anual, 
+                   abono_extra, resultado_mensual
+            FROM calculos 
+            WHERE id_calculo = %s
         """
         cursor.execute(consulta, (id_calculo,))
         fila = cursor.fetchone()
         if not fila:
             return None
         return CalculoAhorro(
-            id_calculo=fila[0], id_usuario=fila[1], meta=fila[2], plazo_meses=fila[3],
-            interes_anual=fila[4], abono_extra=fila[5], resultado_mensual=fila[6],
-            fecha_registro=fila[7]
+            id_calculo=fila[0],
+            id_usuario=fila[1],
+            meta=fila[2],
+            plazo_meses=fila[3],
+            interes_anual=fila[4],
+            abono_extra=fila[5],
+            resultado_mensual=fila[6]
         )
 
     def buscar_por_usuario(id_usuario) -> list[CalculoAhorro]:
-        """Devuelve todos los cálculos de un usuario"""
+        """Devuelve todos los cálculos asociados a un usuario"""
         cursor = CalculosController.obtener_cursor()
         consulta = """
-        SELECT id_calculo, id_usuario, meta, plazo_meses, interes_anual, 
-               abono_extra, resultado_mensual, fecha_registro
-        FROM calculos_ahorro WHERE id_usuario = %s
+            SELECT id_calculo, id_usuario, meta, plazo_meses, interes_anual, 
+                   abono_extra, resultado_mensual
+            FROM calculos 
+            WHERE id_usuario = %s
         """
         cursor.execute(consulta, (id_usuario,))
         filas = cursor.fetchall()
-        if not filas:
-            return []
-
         lista = []
         for fila in filas:
             calculo = CalculoAhorro(
-                id_calculo=fila[0], id_usuario=fila[1], meta=fila[2],
-                plazo_meses=fila[3], interes_anual=fila[4], abono_extra=fila[5],
-                resultado_mensual=fila[6], fecha_registro=fila[7]
+                id_calculo=fila[0],
+                id_usuario=fila[1],
+                meta=fila[2],
+                plazo_meses=fila[3],
+                interes_anual=fila[4],
+                abono_extra=fila[5],
+                resultado_mensual=fila[6]
             )
             lista.append(calculo)
         return lista
@@ -84,11 +96,13 @@ class CalculosController:
         """Modifica un cálculo existente"""
         cursor = CalculosController.obtener_cursor()
         consulta = """
-        UPDATE calculos_ahorro
-        SET meta = %s, plazo_meses = %s, 
-            interes_anual = %s, abono_extra = %s, 
-            resultado_mensual = %s
-        WHERE id_calculo = %s
+            UPDATE calculos
+            SET meta = %s,
+                plazo_meses = %s,
+                interes_anual = %s,
+                abono_extra = %s,
+                resultado_mensual = %s
+            WHERE id_calculo = %s
         """
         cursor.execute(consulta, (nueva_meta, nuevo_plazo, nuevo_interes, nuevo_abono, nuevo_resultado, id_calculo))
         cursor.connection.commit()
@@ -96,7 +110,7 @@ class CalculosController:
     def eliminar(id_calculo):
         """Elimina un cálculo"""
         cursor = CalculosController.obtener_cursor()
-        consulta = "DELETE FROM calculos_ahorro WHERE id_calculo = %s"
+        consulta = "DELETE FROM calculos WHERE id_calculo = %s"
         cursor.execute(consulta, (id_calculo,))
         cursor.connection.commit()
 

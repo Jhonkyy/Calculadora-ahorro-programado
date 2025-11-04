@@ -42,6 +42,18 @@ class UsuariosController:
         if not fila:
             return None
         return Usuario(id_usuario=fila[0], nombre=fila[1])
+    
+    def buscar_por_nombre(nombre_usuario) -> Usuario:
+        cursor = UsuariosController.obtener_cursor()
+        consulta = f"""
+        SELECT id_usuario, nombre
+        FROM usuarios WHERE nombre like '{nombre_usuario}'
+        """
+        cursor.execute(consulta)
+        fila = cursor.fetchone()
+        if not fila:
+            return None
+        return Usuario(id_usuario=fila[0], nombre=fila[1])
 
     def modificar_nombre(id_usuario, nuevo_nombre):
         cursor = UsuariosController.obtener_cursor()

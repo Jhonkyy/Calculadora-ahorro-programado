@@ -1,27 +1,29 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Calcular Ahorro</title>
 </head>
 <body>
-    <form action="/calcular_ahorros">
-    <div >
-        meta <input type="number" name="meta">
-    </div>
-    <div >
-        plazo <input type="number" name="plazo">
-    </div>
-    <div >
-        interes <input type="number" name="interes">
-    </div>
-    <div >
-        abono <input type="number" name="abono">
-    </div>
+    <h2>Calcular ahorro</h2>
+    <form action="/ahorro" method="get">
+        <label>ID Usuario:</label>
+        <input type="number" name="id_usuario"><br><br>
 
-    <button type="submit"> calcular </button>
-    
+        <label>Meta ($):</label>
+        <input type="number" name="meta" ><br><br>
+
+        <label>Plazo (meses):</label>
+        <input type="number" name="plazo"><br><br>
+
+        <label>Interés anual (%):</label>
+        <input type="number" name="interes"><br><br>
+
+        <label>Abono extra ($):</label>
+        <input type="number" name="abono"><br><br>
+
+        <button type="submit">Calcular</button>
     </form>
+
+    <a href="/">Volver al menú</a>
 </body>
 </html>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Resultados</title>
+</head>
+<body>
+    <h2>Historial de cálculos de {{ usuario.nombre }}</h2>
+
+    <table border="1" cellpadding="5">
+        <tr>
+            <th>ID</th>
+            <th>Meta</th>
+            <th>Plazo</th>
+            <th>Interés</th>
+            <th>Abono Extra</th>
+            <th>Resultado</th>
+        </tr>
+        {% for c in calculos %}
+        <tr>
+            <td>{{ c.id_calculo }}</td>
+            <td>{{ c.meta }}</td>
+            <td>{{ c.plazo_meses }}</td>
+            <td>{{ c.interes_anual }}</td>
+            <td>{{ c.abono_extra }}</td>
+            <td>{{ c.resultado_mensual }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <a href="/">Volver al menú</a>
+</body>
+</html>
