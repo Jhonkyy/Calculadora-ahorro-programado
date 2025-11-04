@@ -23,6 +23,16 @@ Antes de ejecutar el proyecto, debes tener instalado:
 | PostgreSQL | 13 o superior |
 | Librerías | psycopg2, unittest |
 
-Instalar la librería principal:
+# Como ejecutar
+instala las dependencias:
 ```bash
-pip install psycopg2
+pip install -r requirements.txt
+```
+
+Corre el codigo de app.py y en el navegador entra a:
+http://127.0.0.1:5000
+
+
+## Autores
+Jhon Fredy Asprilla
+Cristian Andres Copete
